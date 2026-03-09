@@ -3,3 +3,6 @@ scripts/**
 node_modules/**
 tsconfig.json
 .gitignore
+.vscode/**
+package-lock.json
+**/*.map
