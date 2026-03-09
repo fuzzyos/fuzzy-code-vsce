@@ -71,7 +71,6 @@ function openFuzzyTerminal(context: vscode.ExtensionContext, args: string[] = []
 }
 
 export function activate(context: vscode.ExtensionContext) {
-	console.log('Extension is runnin');
 	context.subscriptions.push(
 		vscode.commands.registerCommand("fuzzy-code.openInTerminal", () => {
 			openFuzzyTerminal(context);
