@@ -1,0 +1,73 @@
+{
+	"name": "fuzzy-vs-code",
+	"displayName": "Fuzzy Code for VS Code",
+	"description": "Fuzzy Code for VS Code: Harness the power of Fuzzy Code without leaving your IDE",
+	"version": "0.1.1",
+	"publisher": "fuzzyos",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/fuzzyos/fuzzyos.git",
+		"directory": "packages/fuzzy-vs-code"
+	},
+	"engines": {
+		"vscode": "^1.100.0"
+	},
+	"categories": [
+		"AI",
+		"Programming Languages",
+		"Other"
+	],
+	"keywords": [
+		"fuzzy",
+		"ai",
+		"coding-agent",
+		"llm"
+	],
+	"activationEvents": [],
+	"main": "./dist/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "fuzzy-code.openInTerminal",
+				"title": "Open Fuzzy in Terminal",
+				"category": "Fuzzy Code"
+			},
+			{
+				"command": "fuzzy-code.newSession",
+				"title": "New Session",
+				"category": "Fuzzy Code"
+			},
+			{
+				"command": "fuzzy-code.resumeSession",
+				"title": "Resume Session",
+				"category": "Fuzzy Code"
+			}
+		],
+		"configuration": {
+			"title": "Fuzzy Code",
+			"properties": {
+				"fuzzy-code.executablePath": {
+					"type": "string",
+					"default": "",
+					"description": "Path to the fuzzy CLI executable. Leave empty to use the bundled CLI."
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run build",
+		"build": "node scripts/copy-cli.js && esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --sourcemap",
+		"watch": "node scripts/copy-cli.js && esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --sourcemap --watch",
+		"clean": "shx rm -rf dist resources/fuzzy-code",
+		"lint": "biome check --error-on-warnings .",
+		"check": "tsc --noEmit && biome check --error-on-warnings ."
+	},
+	"devDependencies": {
+		"@fuzzyos/fuzzy-code": "^0.1.1",
+		"@types/vscode": "^1.100.0",
+		"esbuild": "^0.25.0",
+		"shx": "^0.4.0",
+		"typescript": "^5.7.3"
+	}
+}
