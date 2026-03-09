@@ -2,13 +2,13 @@
 	"name": "fuzzy-code",
 	"displayName": "Fuzzy Code for VS Code",
 	"description": "Fuzzy Code for VS Code: Harness the power of Fuzzy Code without leaving your IDE",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"publisher": "fuzzyos",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/fuzzyos/fuzzy-vs-code.git",
-		"directory": "packages/fuzzy-vs-code"
+		"url": "https://github.com/fuzzyos/fuzzy-code-vsce.git",
+		"directory": "packages/fuzzy-code-vsce"
 	},
 	"engines": {
 		"vscode": "^1.100.0"
