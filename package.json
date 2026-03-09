@@ -7,7 +7,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/fuzzyos/fuzzyos.git",
+		"url": "https://github.com/fuzzyos/fuzzy-vs-code.git",
 		"directory": "packages/fuzzy-vs-code"
 	},
 	"engines": {
