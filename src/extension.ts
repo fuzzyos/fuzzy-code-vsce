@@ -12,6 +12,24 @@ function getWorkspaceFolder(): string | undefined {
 	return undefined;
 }
 
+function findNodeBinary(): string {
+	// Scan nvm versions (newest first)
+	const home = process.env.HOME ?? "";
+	const nvmDir = path.join(home, ".nvm", "versions", "node");
+	if (fs.existsSync(nvmDir)) {
+		const versions = fs.readdirSync(nvmDir).sort().reverse();
+		for (const version of versions) {
+			const bin = path.join(nvmDir, version, "bin", "node");
+			if (fs.existsSync(bin)) return bin;
+		}
+	}
+	// Common system paths
+	for (const p of ["/usr/local/bin/node", "/usr/bin/node", "/opt/homebrew/bin/node"]) {
+		if (fs.existsSync(p)) return p;
+	}
+	return "node";
+}
+
 function getFuzzyExecutable(context: vscode.ExtensionContext): {
 	shellPath: string;
 	shellArgs: string[];
@@ -22,10 +40,10 @@ function getFuzzyExecutable(context: vscode.ExtensionContext): {
 		return { shellPath: configured, shellArgs: [] };
 	}
 
-	// Use bundled CLI (run with the same Node.js that hosts the extension)
-	const bundledCli = context.asAbsolutePath(path.join("resources", "fuzzy-code", "cli.js"));
+	// Use bundled CLI with a real node binary (process.execPath is Electron in VS Code)
+	const bundledCli = context.asAbsolutePath(path.join("resources", "fuzzy-code", "dist", "cli.js"));
 	if (fs.existsSync(bundledCli)) {
-		return { shellPath: process.execPath, shellArgs: [bundledCli] };
+		return { shellPath: findNodeBinary(), shellArgs: [bundledCli] };
 	}
 
 	// Fall back to fuzzy on PATH
