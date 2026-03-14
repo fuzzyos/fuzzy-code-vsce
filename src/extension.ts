@@ -41,7 +41,7 @@ function getFuzzyExecutable(context: vscode.ExtensionContext): {
 	}
 
 	// Use bundled CLI with a real node binary (process.execPath is Electron in VS Code)
-	const bundledCli = context.asAbsolutePath(path.join("resources", "fuzzy-code", "dist", "cli.js"));
+	const bundledCli = context.asAbsolutePath(path.join("resources", "fuzzy-code", "cli.mjs"));
 	if (fs.existsSync(bundledCli)) {
 		return { shellPath: findNodeBinary(), shellArgs: [bundledCli] };
 	}
@@ -58,12 +58,21 @@ function openFuzzyTerminal(context: vscode.ExtensionContext, args: string[] = []
 	}
 
 	const { shellPath, shellArgs } = getFuzzyExecutable(context);
+	const workspaceFolder = getWorkspaceFolder();
+
+	// Set NODE_PATH so user extensions can resolve dependencies
+	// from the workspace node_modules (e.g. @sinclair/typebox)
+	const nodePaths = [
+		workspaceFolder ? path.join(workspaceFolder, "node_modules") : undefined,
+		process.env.NODE_PATH,
+	].filter(Boolean).join(path.delimiter);
 
 	fuzzyTerminal = vscode.window.createTerminal({
 		name: "Fuzzy Code",
-		cwd: getWorkspaceFolder(),
+		cwd: workspaceFolder,
 		shellPath,
 		shellArgs: [...shellArgs, ...args],
+		env: { NODE_PATH: nodePaths },
 	});
 
 	fuzzyTerminal.show();
