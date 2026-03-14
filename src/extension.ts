@@ -62,10 +62,9 @@ function openFuzzyTerminal(context: vscode.ExtensionContext, args: string[] = []
 
 	// Set NODE_PATH so user extensions can resolve dependencies
 	// from the workspace node_modules (e.g. @sinclair/typebox)
-	const nodePaths = [
-		workspaceFolder ? path.join(workspaceFolder, "node_modules") : undefined,
-		process.env.NODE_PATH,
-	].filter(Boolean).join(path.delimiter);
+	const nodePaths = [workspaceFolder ? path.join(workspaceFolder, "node_modules") : undefined, process.env.NODE_PATH]
+		.filter(Boolean)
+		.join(path.delimiter);
 
 	fuzzyTerminal = vscode.window.createTerminal({
 		name: "Fuzzy Code",
