@@ -1,6 +1,8 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as vscode from "vscode";
+import { FuzzyPanel } from "./fuzzyPanel";
+import { FuzzyTab } from "./fuzzyTab";
 
 let fuzzyTerminal: vscode.Terminal | undefined;
 
@@ -79,7 +81,21 @@ function openFuzzyTerminal(context: vscode.ExtensionContext, args: string[] = []
 }
 
 export function activate(context: vscode.ExtensionContext) {
+	// Register the sidebar webview panel provider
+	const fuzzyPanel = new FuzzyPanel(context);
 	context.subscriptions.push(
+		vscode.window.registerWebviewViewProvider(FuzzyPanel.viewType, fuzzyPanel, {
+			webviewOptions: { retainContextWhenHidden: true },
+		}),
+
+		vscode.commands.registerCommand("fuzzy-code.openTab", () => {
+			FuzzyTab.open(context);
+		}),
+
+		vscode.commands.registerCommand("fuzzy-code.focusSidebar", () => {
+			vscode.commands.executeCommand(`${FuzzyPanel.viewType}.focus`);
+		}),
+
 		vscode.commands.registerCommand("fuzzy-code.openInTerminal", () => {
 			openFuzzyTerminal(context);
 		}),
