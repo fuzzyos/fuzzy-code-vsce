@@ -6,7 +6,8 @@ tsconfig.json
 .vscode/**
 package-lock.json
 **/*.map
-# Exclude all files from the monorepo root (parent directories)
+# Exclude all files from parent/sibling directories (monorepo)
+../**
 ../../**
 # Exclude sibling packages
 ../fuzzy-ai/**
