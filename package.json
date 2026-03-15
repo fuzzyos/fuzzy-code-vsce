@@ -52,6 +52,10 @@
 				{
 					"command": "fuzzy-code.openTab",
 					"group": "navigation"
+				},
+				{
+					"command": "fuzzy-code.openTuiTab",
+					"group": "navigation"
 				}
 			]
 		},
@@ -64,6 +68,11 @@
 					"light": "resources/images/icon_light.svg",
 					"dark": "resources/images/icon_dark.svg"
 				}
+			},
+			{
+				"command": "fuzzy-code.openTuiTab",
+				"title": "Open Fuzzy TUI as Tab",
+				"category": "Fuzzy Code"
 			},
 			{
 				"command": "fuzzy-code.focusSidebar",
