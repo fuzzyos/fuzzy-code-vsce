@@ -2,7 +2,7 @@
 	"name": "fuzzy-code",
 	"displayName": "Fuzzy Code for VS Code",
 	"description": "Fuzzy Code for VS Code: Harness the power of Fuzzy Code without leaving your IDE",
-	"version": "0.2.1",
+	"version": "0.2.2",
 	"publisher": "fuzzyos",
 	"icon": "icon.png",
 	"license": "MIT",
@@ -28,7 +28,44 @@
 	"activationEvents": [],
 	"main": "./dist/extension.js",
 	"contributes": {
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "fuzzy-code-container",
+					"title": "Fuzzy Code",
+					"icon": "resources/icon.svg"
+				}
+			]
+		},
+		"views": {
+			"fuzzy-code-container": [
+				{
+					"type": "webview",
+					"id": "fuzzy-code.sidebar",
+					"name": "Fuzzy Code"
+				}
+			]
+		},
+		"menus": {
+			"editor/title": [
+				{
+					"command": "fuzzy-code.openTab",
+					"group": "navigation"
+				}
+			]
+		},
 		"commands": [
+			{
+				"command": "fuzzy-code.openTab",
+				"title": "New Fuzzy Tab",
+				"category": "Fuzzy Code",
+				"icon": "resources/icon.svg"
+			},
+			{
+				"command": "fuzzy-code.focusSidebar",
+				"title": "Focus Sidebar",
+				"category": "Fuzzy Code"
+			},
 			{
 				"command": "fuzzy-code.openInTerminal",
 				"title": "Open Fuzzy in Terminal",
@@ -58,8 +95,8 @@
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run build",
-		"build": "node scripts/copy-cli.js && esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --sourcemap",
-		"watch": "node scripts/copy-cli.js && esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --sourcemap --watch",
+		"build": "node scripts/copyCli.js && esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --sourcemap && esbuild src/webview.ts --bundle --outfile=dist/webview.js --format=iife --platform=browser --sourcemap",
+		"watch": "node scripts/copyCli.js && esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --sourcemap --watch & esbuild src/webview.ts --bundle --outfile=dist/webview.js --format=iife --platform=browser --sourcemap --watch",
 		"clean": "shx rm -rf dist resources/fuzzy-code",
 		"lint": "biome check --error-on-warnings .",
 		"check": "tsc --noEmit && biome check --error-on-warnings ."
