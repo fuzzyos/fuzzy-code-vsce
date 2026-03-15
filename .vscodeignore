@@ -6,3 +6,5 @@ tsconfig.json
 .vscode/**
 package-lock.json
 **/*.map
+# Exclude all files from the monorepo root (parent directories)
+../../**
