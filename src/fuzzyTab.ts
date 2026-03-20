@@ -19,16 +19,11 @@ export class FuzzyTab {
 	private constructor(private readonly _context: vscode.ExtensionContext) {
 		const n = ++FuzzyTab._count;
 		const title = n === 1 ? "Fuzzy Code" : `Fuzzy Code ${n}`;
-		this._panel = vscode.window.createWebviewPanel(
-			"fuzzy-code.tab",
-			title,
-			vscode.ViewColumn.Active,
-			{
-				enableScripts: true,
-				retainContextWhenHidden: true,
-				localResourceRoots: [_context.extensionUri],
-			},
-		);
+		this._panel = vscode.window.createWebviewPanel("fuzzy-code.tab", title, vscode.ViewColumn.Active, {
+			enableScripts: true,
+			retainContextWhenHidden: true,
+			localResourceRoots: [_context.extensionUri],
+		});
 		this._panel.iconPath = {
 			light: vscode.Uri.joinPath(_context.extensionUri, "resources", "icon.svg"),
 			dark: vscode.Uri.joinPath(_context.extensionUri, "resources", "icon_dark.svg"),
@@ -189,7 +184,7 @@ export class FuzzyTab {
 
 	private _writeRpc(cmd: object) {
 		if (this._rpcProcess?.stdin?.writable) {
-			this._rpcProcess.stdin.write(JSON.stringify(cmd) + "\n");
+			this._rpcProcess.stdin.write(`${JSON.stringify(cmd)}\n`);
 		}
 	}
 

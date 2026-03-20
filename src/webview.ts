@@ -19,17 +19,12 @@ const vscode = acquireVsCodeApi();
 
 /** Strip ANSI SGR escape sequences. */
 function stripAnsi(s: string): string {
-	// biome-ignore lint/suspicious/noControlCharactersInRegex: intentional ANSI strip
 	return s.replace(/\x1b\[[0-9;]*m/g, "").replace(/\x1b\[[0-9;]*[A-Za-z]/g, "");
 }
 
 /** Escape HTML special characters. */
 function escHtml(s: string): string {
-	return s
-		.replace(/&/g, "&amp;")
-		.replace(/</g, "&lt;")
-		.replace(/>/g, "&gt;")
-		.replace(/"/g, "&quot;");
+	return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
 /**
@@ -69,8 +64,7 @@ function extractText(content: unknown): string {
 		.map((block: any) => {
 			if (block.type === "text") return block.text ?? "";
 			if (block.type === "thinking") return `<thinking>${block.thinking ?? ""}</thinking>`;
-			if (block.type === "toolCall")
-				return `[Tool: ${block.name ?? ""}(${JSON.stringify(block.input ?? {})})]`;
+			if (block.type === "toolCall") return `[Tool: ${block.name ?? ""}(${JSON.stringify(block.input ?? {})})]`;
 			return "";
 		})
 		.join("");
@@ -97,7 +91,7 @@ interface DisplayMessage {
 	collapsed: boolean;
 }
 
-let state: {
+const state: {
 	sessionName: string;
 	modelLabel: string;
 	isStreaming: boolean;
@@ -574,7 +568,7 @@ function createMessageEl(dm: DisplayMessage): HTMLElement {
 
 	const row = document.createElement("div");
 	row.className = `msg-row ${cls}`;
-	row.dataset["id"] = dm.id;
+	row.dataset.id = dm.id;
 	if (dm.role === "toolResult" && dm.collapsed) row.classList.add("collapsed");
 
 	const labelEl = document.createElement("div");
@@ -746,7 +740,7 @@ function handleMessage(event: MessageEvent) {
 			const m = msg.message;
 			if (!m) break;
 			const raw = extractText(m.content);
-			const html = renderMarkdown(raw) + '<span class="stream-cursor"></span>';
+			const html = `${renderMarkdown(raw)}<span class="stream-cursor"></span>`;
 			updateMessageEl(state.streamMsgId, html, raw);
 			scrollToBottom();
 			break;
