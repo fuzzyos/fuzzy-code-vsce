@@ -8,3 +8,13 @@ package-lock.json
 **/*.map
 # Exclude all files from the monorepo root (parent directories)
 ../../**
+# Exclude sibling packages
+../fuzzy-ai/**
+../fuzzy-agent/**
+../fuzzy-tui/**
+../fuzzy-pods/**
+../fuzzy-web-ui/**
+../fuzzy-code/**
+../fuzzy-code-vsce/**
+# Exclude .git directories
+**/.git/**

@@ -2,7 +2,7 @@
 	"name": "fuzzy-code",
 	"displayName": "Fuzzy Code for VS Code",
 	"description": "Fuzzy Code for VS Code: Harness the power of Fuzzy Code without leaving your IDE",
-	"version": "0.2.2",
+	"version": "0.3.1",
 	"publisher": "fuzzyos",
 	"icon": "icon.png",
 	"license": "MIT",
