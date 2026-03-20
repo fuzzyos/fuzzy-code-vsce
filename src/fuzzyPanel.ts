@@ -190,7 +190,7 @@ export class FuzzyPanel implements vscode.WebviewViewProvider {
 
 	private _writeRpc(cmd: object) {
 		if (this._rpcProcess?.stdin?.writable) {
-			this._rpcProcess.stdin.write(JSON.stringify(cmd) + "\n");
+			this._rpcProcess.stdin.write(`${JSON.stringify(cmd)}\n`);
 		}
 	}
 
@@ -212,9 +212,7 @@ export class FuzzyPanel implements vscode.WebviewViewProvider {
 	}
 
 	private _getHtml(webview: vscode.Webview): string {
-		const scriptUri = webview.asWebviewUri(
-			vscode.Uri.joinPath(this._context.extensionUri, "dist", "webview.js"),
-		);
+		const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this._context.extensionUri, "dist", "webview.js"));
 		const nonce = crypto.randomUUID().replace(/-/g, "");
 		return `<!DOCTYPE html>
 <html lang="en">
