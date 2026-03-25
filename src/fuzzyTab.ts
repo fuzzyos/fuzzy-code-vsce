@@ -25,8 +25,8 @@ export class FuzzyTab {
 			localResourceRoots: [_context.extensionUri],
 		});
 		this._panel.iconPath = {
-			light: vscode.Uri.joinPath(_context.extensionUri, "resources", "icon_light.svg"),
-			dark: vscode.Uri.joinPath(_context.extensionUri, "resources", "icon_dark.svg"),
+			light: vscode.Uri.joinPath(_context.extensionUri, "resources", "images", "icon_light.svg"),
+			dark: vscode.Uri.joinPath(_context.extensionUri, "resources", "images", "icon_dark.svg"),
 		};
 		this._panel.webview.html = this._getHtml();
 		this._panel.webview.onDidReceiveMessage(this._onWebviewMessage.bind(this));
