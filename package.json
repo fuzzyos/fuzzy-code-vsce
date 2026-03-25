@@ -34,7 +34,10 @@
 				{
 					"id": "fuzzy-code-container",
 					"title": "Fuzzy Code",
-					"icon": "resources/icon.svg"
+					"icon": {
+						"light": "resources/images/icon.svg",
+						"dark": "resources/images/icon_dark.svg"
+					}
 				}
 			]
 		},
@@ -60,7 +63,10 @@
 				"command": "fuzzy-code.openTab",
 				"title": "New Fuzzy Tab",
 				"category": "Fuzzy Code",
-				"icon": "resources/icon.svg"
+				"icon": {
+					"light": "resources/images/icon.svg",
+					"dark": "resources/images/icon_dark.svg"
+				}
 			},
 			{
 				"command": "fuzzy-code.focusSidebar",
