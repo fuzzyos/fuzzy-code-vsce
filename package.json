@@ -2,7 +2,7 @@
 	"name": "fuzzy-code",
 	"displayName": "Fuzzy Code for VS Code",
 	"description": "Fuzzy Code for VS Code: Harness the power of Fuzzy Code without leaving your IDE",
-	"version": "0.3.5",
+	"version": "0.3.6",
 	"private": true,
 	"publisher": "fuzzyos",
 	"icon": "icon.png",
@@ -34,7 +34,7 @@
 				{
 					"id": "fuzzy-code-container",
 					"title": "Fuzzy Code",
-					"icon": "resources/images/icon.svg"
+					"icon": "resources/images/sidebar_logo.svg"
 				}
 			]
 		},
