@@ -99,7 +99,10 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand("fuzzy-code.openTuiTab", () => {
 			const { shellPath, shellArgs } = getFuzzyExecutable(context);
 			const workspaceFolder = getWorkspaceFolder();
-			const nodePaths = [workspaceFolder ? path.join(workspaceFolder, "node_modules") : undefined, process.env.NODE_PATH]
+			const nodePaths = [
+				workspaceFolder ? path.join(workspaceFolder, "node_modules") : undefined,
+				process.env.NODE_PATH,
+			]
 				.filter(Boolean)
 				.join(path.delimiter);
 			const terminal = vscode.window.createTerminal({
