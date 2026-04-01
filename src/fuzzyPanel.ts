@@ -190,7 +190,6 @@ export class FuzzyPanel implements vscode.WebviewViewProvider {
 		}
 	}
 
-
 	setActiveFile(path: string | null): void {
 		this._activeFile = path;
 		this._post({ type: "active_file", path });
