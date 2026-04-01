@@ -83,6 +83,7 @@ function openFuzzyTerminal(context: vscode.ExtensionContext, args: string[] = []
 export function activate(context: vscode.ExtensionContext) {
 	// Register the sidebar webview panel provider
 	const fuzzyPanel = new FuzzyPanel(context);
+	const fuzzyTabs = new Set<FuzzyTab>();
 
 	const initialEditor = vscode.window.activeTextEditor;
 	if (initialEditor?.document.uri.scheme === "file") {
@@ -95,7 +96,14 @@ export function activate(context: vscode.ExtensionContext) {
 		}),
 
 		vscode.commands.registerCommand("fuzzy-code.openTab", () => {
-			FuzzyTab.open(context);
+			const tab = FuzzyTab.open(context);
+			const activeFilePath =
+				vscode.window.activeTextEditor?.document.uri.scheme === "file"
+					? vscode.window.activeTextEditor.document.uri.fsPath
+					: null;
+			tab.setActiveFile(activeFilePath);
+			fuzzyTabs.add(tab);
+			tab.onDispose(() => fuzzyTabs.delete(tab));
 		}),
 
 		vscode.commands.registerCommand("fuzzy-code.focusSidebar", () => {
@@ -145,6 +153,7 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.onDidChangeActiveTextEditor((editor) => {
 			const filePath = editor?.document.uri.scheme === "file" ? editor.document.uri.fsPath : null;
 			fuzzyPanel.setActiveFile(filePath);
+			for (const tab of fuzzyTabs) tab.setActiveFile(filePath);
 		}),
 	);
 }
