@@ -9,6 +9,8 @@ Harness the power of [Fuzzy Code](https://github.com/fuzzyos/fuzzyos) without le
 - **Terminal sessions** — Launch Fuzzy in an integrated terminal for full TUI access
 - **Native dialogs** — Confirmations, quick picks, and input boxes use VS Code's native UI
 - **Bundled CLI** — No separate install required; the Fuzzy CLI is bundled inside the extension
+- **Active file context** — The currently open file is automatically included as context with each message
+- **Selection context** — Select text in any editor to send only that range instead of the whole file; a line indicator shows which lines are active
 
 ## Usage
 
@@ -35,6 +37,10 @@ Each tab runs an independent session — open as many as you need.
 - **Enter** — Send message
 - **Shift+Enter** — Insert newline
 - The send button (↑) switches to an abort button (⏹) while Fuzzy is responding
+
+### Context from the Editor
+
+The active file is automatically attached as context with every message. When you have text selected, only the selected lines are sent — the input area shows a `lines X–Y` badge to confirm which range is active. Deselecting returns to whole-file context.
 
 ## Requirements
 
