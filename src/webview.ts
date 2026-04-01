@@ -306,12 +306,9 @@ pre.code-block code {
   display: none;
   align-items: center;
   gap: 4px;
-  padding: 3px 8px;
-  margin-bottom: 4px;
-  border-radius: 6px;
+  padding: 4px 14px 0;
   font-size: 11px;
   color: var(--vscode-descriptionForeground);
-  background: var(--vscode-badge-background, rgba(128,128,128,0.1));
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -553,8 +550,8 @@ function buildUI() {
 	elActiveFile.id = "active-file";
 
 	inputFooter.append(hint, elSubmitBtn);
-	inputCard.append(elPromptInput, inputFooter);
-	inputArea.append(elActiveFile, inputCard);
+	inputCard.append(elActiveFile, elPromptInput, inputFooter);
+	inputArea.append(inputCard);
 
 	app.append(elToolbar, elErrorBar, elMessages, elReconnectBar, inputArea);
 }
