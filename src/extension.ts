@@ -151,7 +151,11 @@ export function activate(context: vscode.ExtensionContext) {
 		}),
 
 		vscode.window.onDidChangeActiveTextEditor((editor) => {
-			const filePath = editor?.document.uri.scheme === "file" ? editor.document.uri.fsPath : null;
+			// When a webview (e.g. the Fuzzy tab itself) gains focus, VS Code fires this
+			// event with editor=undefined. Skip that case so the active file indicator
+			// is not cleared just because the user switched to the Fuzzy panel.
+			if (editor === undefined) return;
+			const filePath = editor.document.uri.scheme === "file" ? editor.document.uri.fsPath : null;
 			fuzzyPanel.setActiveFile(filePath);
 			for (const tab of fuzzyTabs) tab.setActiveFile(filePath);
 		}),
