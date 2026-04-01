@@ -310,8 +310,8 @@ pre.code-block code {
   margin-bottom: 4px;
   border-radius: 6px;
   font-size: 11px;
-  color: var(--vscode-badge-background, rgba(128,128,128,0.7));
-  background: var(--vscode-badge-foreground, var(--vscode-editor-foreground));
+  color: var(--vscode-descriptionForeground);
+  background: var(--vscode-badge-background, rgba(128,128,128,0.1));
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
