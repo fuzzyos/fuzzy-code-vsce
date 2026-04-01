@@ -306,14 +306,23 @@ pre.code-block code {
   display: none;
   align-items: center;
   gap: 4px;
-  padding: 4px 14px 0;
+  padding: 3px 10px;
+  margin: 4px 4px 0;
   font-size: 11px;
   color: var(--vscode-descriptionForeground);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  text-align: left;
+  transition: background 0.1s, opacity 0.1s;
 }
 #active-file.visible { display: flex; }
+#active-file:hover { background: var(--vscode-toolbar-hoverBackground, rgba(128,128,128,0.1)); }
+#active-file.context-disabled { opacity: 0.4; text-decoration: line-through; }
 #active-selection-badge {
   display: none;
   font-size: 10px;
@@ -446,8 +455,10 @@ let elMessages: HTMLDivElement;
 let elReconnectBar: HTMLDivElement;
 let elPromptInput: HTMLTextAreaElement;
 let elSubmitBtn: HTMLButtonElement;
-let elActiveFile: HTMLDivElement;
+let elActiveFile: HTMLButtonElement;
 let elActiveSelectionBadge: HTMLSpanElement;
+let contextEnabled = true;
+let activeFilePath: string | null = null;
 
 function buildUI() {
 	const app = document.getElementById("app")!;
@@ -558,12 +569,17 @@ function buildUI() {
 		}
 	});
 
-	elActiveFile = document.createElement("div");
+	elActiveFile = document.createElement("button");
 	elActiveFile.id = "active-file";
 	elActiveFile.appendChild(document.createTextNode(""));
 	elActiveSelectionBadge = document.createElement("span");
 	elActiveSelectionBadge.id = "active-selection-badge";
 	elActiveFile.appendChild(elActiveSelectionBadge);
+	elActiveFile.addEventListener("click", () => {
+		contextEnabled = !contextEnabled;
+		elActiveFile.classList.toggle("context-disabled", !contextEnabled);
+		elActiveFile.title = (contextEnabled ? "Click to exclude from context" : "Click to include in context") + (activeFilePath ? ` (${activeFilePath})` : "");
+	});
 
 	inputFooter.append(hint, elSubmitBtn);
 	inputCard.append(elActiveFile, elPromptInput, inputFooter);
@@ -665,7 +681,7 @@ function submitPrompt() {
 	elPromptInput.value = "";
 	elPromptInput.style.height = "auto";
 	hideError();
-	sendRpc({ type: "prompt", message: text });
+	sendRpc({ type: "prompt", message: text, includeContext: contextEnabled });
 }
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -831,11 +847,13 @@ function handleMessage(event: MessageEvent) {
 		}
 		case "active_file": {
 			const filePath: string | null = msg.path ?? null;
+			activeFilePath = filePath;
 			if (filePath) {
 				const name = filePath.replace(/.*[/\\]/, "");
 				elActiveFile.firstChild!.textContent = `📄 ${name}`;
-				elActiveFile.title = filePath;
+				elActiveFile.title = (contextEnabled ? "Click to exclude from context" : "Click to include in context") + (activeFilePath ? ` (${activeFilePath})` : "");
 				elActiveFile.classList.add("visible");
+				elActiveFile.classList.toggle("context-disabled", !contextEnabled);
 				elActiveSelectionBadge.classList.remove("visible");
 			} else {
 				elActiveFile.classList.remove("visible");

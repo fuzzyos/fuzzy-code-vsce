@@ -230,7 +230,8 @@ export class FuzzyTab {
 		if (msg.type === "rpc_command") {
 			const cmd = msg.command;
 			if (cmd.type === "prompt" && typeof cmd.message === "string") {
-				this._writeRpc({ ...cmd, message: this._buildActiveFileTag() + cmd.message });
+				const tag = cmd.includeContext !== false ? this._buildActiveFileTag() : "";
+				this._writeRpc({ ...cmd, message: tag + cmd.message });
 			} else {
 				this._writeRpc(cmd);
 			}

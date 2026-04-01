@@ -230,7 +230,7 @@ export class FuzzyPanel implements vscode.WebviewViewProvider {
 		if (msg.type === "rpc_command") {
 			const cmd = msg.command;
 			if (cmd.type === "prompt" && typeof cmd.message === "string") {
-				const tag = this._buildActiveFileTag();
+				const tag = cmd.includeContext !== false ? this._buildActiveFileTag() : "";
 				this._writeRpc({ ...cmd, message: tag + cmd.message });
 			} else {
 				this._writeRpc(cmd);
