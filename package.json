@@ -2,7 +2,7 @@
 	"name": "fuzzy-code",
 	"displayName": "Fuzzy Code for VS Code",
 	"description": "Fuzzy Code for VS Code: Harness the power of Fuzzy Code without leaving your IDE",
-	"version": "0.3.12",
+	"version": "0.3.13",
 	"private": true,
 	"publisher": "fuzzyos",
 	"icon": "icon.png",
@@ -115,7 +115,7 @@
 		"check": "tsc --noEmit && biome check --error-on-warnings ."
 	},
 	"devDependencies": {
-		"@fuzzyos/fuzzy-code": "^0.3.2",
+		"@fuzzyos/fuzzy-code": "^0.3.13",
 		"@types/vscode": "^1.95.0",
 		"esbuild": "^0.25.0",
 		"shx": "^0.4.0",
