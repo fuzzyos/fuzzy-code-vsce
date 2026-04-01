@@ -83,6 +83,12 @@ function openFuzzyTerminal(context: vscode.ExtensionContext, args: string[] = []
 export function activate(context: vscode.ExtensionContext) {
 	// Register the sidebar webview panel provider
 	const fuzzyPanel = new FuzzyPanel(context);
+
+	const initialEditor = vscode.window.activeTextEditor;
+	if (initialEditor?.document.uri.scheme === "file") {
+		fuzzyPanel.setActiveFile(initialEditor.document.uri.fsPath);
+	}
+
 	context.subscriptions.push(
 		vscode.window.registerWebviewViewProvider(FuzzyPanel.viewType, fuzzyPanel, {
 			webviewOptions: { retainContextWhenHidden: true },
@@ -134,6 +140,11 @@ export function activate(context: vscode.ExtensionContext) {
 			if (terminal === fuzzyTerminal) {
 				fuzzyTerminal = undefined;
 			}
+		}),
+
+		vscode.window.onDidChangeActiveTextEditor((editor) => {
+			const filePath = editor?.document.uri.scheme === "file" ? editor.document.uri.fsPath : null;
+			fuzzyPanel.setActiveFile(filePath);
 		}),
 	);
 }

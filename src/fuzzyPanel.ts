@@ -10,6 +10,7 @@ export class FuzzyPanel implements vscode.WebviewViewProvider {
 	private _rpcProcess?: child_process.ChildProcess;
 	private _disposed = false;
 	private _buffer = "";
+	private _activeFile: string | null = null;
 
 	constructor(private readonly _context: vscode.ExtensionContext) {}
 
@@ -106,6 +107,7 @@ export class FuzzyPanel implements vscode.WebviewViewProvider {
 		setTimeout(() => {
 			this._writeRpc({ type: "get_state" });
 			this._writeRpc({ type: "get_messages" });
+			this._post({ type: "active_file", path: this._activeFile });
 		}, 400);
 	}
 
@@ -188,6 +190,22 @@ export class FuzzyPanel implements vscode.WebviewViewProvider {
 		}
 	}
 
+
+	setActiveFile(path: string | null): void {
+		this._activeFile = path;
+		this._post({ type: "active_file", path });
+	}
+
+	private _buildActiveFileTag(): string {
+		if (!this._activeFile) return "";
+		try {
+			const content = fs.readFileSync(this._activeFile, "utf-8");
+			return `<open_file path="${this._activeFile}">\n${content}\n</open_file>\n\n`;
+		} catch {
+			return "";
+		}
+	}
+
 	private _writeRpc(cmd: object) {
 		if (this._rpcProcess?.stdin?.writable) {
 			this._rpcProcess.stdin.write(`${JSON.stringify(cmd)}\n`);
@@ -200,7 +218,13 @@ export class FuzzyPanel implements vscode.WebviewViewProvider {
 
 	private _onWebviewMessage(msg: any) {
 		if (msg.type === "rpc_command") {
-			this._writeRpc(msg.command);
+			const cmd = msg.command;
+			if (cmd.type === "prompt" && typeof cmd.message === "string") {
+				const tag = this._buildActiveFileTag();
+				this._writeRpc({ ...cmd, message: tag + cmd.message });
+			} else {
+				this._writeRpc(cmd);
+			}
 		} else if (msg.type === "restart") {
 			this._rpcProcess?.kill();
 			this._rpcProcess = undefined;

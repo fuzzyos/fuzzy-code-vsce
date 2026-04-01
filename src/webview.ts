@@ -302,6 +302,22 @@ pre.code-block code {
   background: var(--vscode-sideBar-background, var(--vscode-editor-background));
 }
 
+#active-file {
+  display: none;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  margin-bottom: 4px;
+  border-radius: 6px;
+  font-size: 11px;
+  color: var(--vscode-descriptionForeground);
+  background: var(--vscode-badge-background, rgba(128,128,128,0.15));
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+#active-file.visible { display: flex; }
+
 #input-card {
   border: 1px solid var(--vscode-input-border, rgba(128,128,128,0.35));
   border-radius: 12px;
@@ -422,6 +438,7 @@ let elMessages: HTMLDivElement;
 let elReconnectBar: HTMLDivElement;
 let elPromptInput: HTMLTextAreaElement;
 let elSubmitBtn: HTMLButtonElement;
+let elActiveFile: HTMLDivElement;
 
 function buildUI() {
 	const app = document.getElementById("app")!;
@@ -532,9 +549,12 @@ function buildUI() {
 		}
 	});
 
+	elActiveFile = document.createElement("div");
+	elActiveFile.id = "active-file";
+
 	inputFooter.append(hint, elSubmitBtn);
 	inputCard.append(elPromptInput, inputFooter);
-	inputArea.append(inputCard);
+	inputArea.append(elActiveFile, inputCard);
 
 	app.append(elToolbar, elErrorBar, elMessages, elReconnectBar, inputArea);
 }
@@ -794,6 +814,18 @@ function handleMessage(event: MessageEvent) {
 			// Only show non-empty, non-whitespace stderr
 			const text: string = (msg.text ?? "").trim();
 			if (text) showError(`stderr: ${text}`);
+			break;
+		}
+		case "active_file": {
+			const filePath: string | null = msg.path ?? null;
+			if (filePath) {
+				const name = filePath.replace(/.*[/\\]/, "");
+				elActiveFile.textContent = `📄 ${name}`;
+				elActiveFile.title = filePath;
+				elActiveFile.classList.add("visible");
+			} else {
+				elActiveFile.classList.remove("visible");
+			}
 			break;
 		}
 	}
