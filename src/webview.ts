@@ -314,6 +314,17 @@ pre.code-block code {
   text-overflow: ellipsis;
 }
 #active-file.visible { display: flex; }
+#active-selection-badge {
+  display: none;
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--vscode-badge-background, rgba(128,128,128,0.2));
+  color: var(--vscode-badge-foreground, inherit);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+#active-selection-badge.visible { display: inline; }
 
 #input-card {
   border: 1px solid var(--vscode-input-border, rgba(128,128,128,0.35));
@@ -436,6 +447,7 @@ let elReconnectBar: HTMLDivElement;
 let elPromptInput: HTMLTextAreaElement;
 let elSubmitBtn: HTMLButtonElement;
 let elActiveFile: HTMLDivElement;
+let elActiveSelectionBadge: HTMLSpanElement;
 
 function buildUI() {
 	const app = document.getElementById("app")!;
@@ -548,6 +560,10 @@ function buildUI() {
 
 	elActiveFile = document.createElement("div");
 	elActiveFile.id = "active-file";
+	elActiveFile.appendChild(document.createTextNode(""));
+	elActiveSelectionBadge = document.createElement("span");
+	elActiveSelectionBadge.id = "active-selection-badge";
+	elActiveFile.appendChild(elActiveSelectionBadge);
 
 	inputFooter.append(hint, elSubmitBtn);
 	inputCard.append(elActiveFile, elPromptInput, inputFooter);
@@ -817,11 +833,24 @@ function handleMessage(event: MessageEvent) {
 			const filePath: string | null = msg.path ?? null;
 			if (filePath) {
 				const name = filePath.replace(/.*[/\\]/, "");
-				elActiveFile.textContent = `📄 ${name}`;
+				elActiveFile.firstChild!.textContent = `📄 ${name}`;
 				elActiveFile.title = filePath;
 				elActiveFile.classList.add("visible");
+				elActiveSelectionBadge.classList.remove("visible");
 			} else {
 				elActiveFile.classList.remove("visible");
+				elActiveSelectionBadge.classList.remove("visible");
+			}
+			break;
+		}
+		case "active_selection": {
+			const { startLine, endLine } = msg as { startLine: number | null; endLine: number | null };
+			if (startLine !== null && endLine !== null) {
+				const label = startLine === endLine ? `line ${startLine}` : `lines ${startLine}–${endLine}`;
+				elActiveSelectionBadge.textContent = label;
+				elActiveSelectionBadge.classList.add("visible");
+			} else {
+				elActiveSelectionBadge.classList.remove("visible");
 			}
 			break;
 		}

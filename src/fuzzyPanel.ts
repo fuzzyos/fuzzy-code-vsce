@@ -11,6 +11,7 @@ export class FuzzyPanel implements vscode.WebviewViewProvider {
 	private _disposed = false;
 	private _buffer = "";
 	private _activeFile: string | null = null;
+	private _activeSelection: { text: string; startLine: number; endLine: number } | null = null;
 
 	constructor(private readonly _context: vscode.ExtensionContext) {}
 
@@ -192,12 +193,22 @@ export class FuzzyPanel implements vscode.WebviewViewProvider {
 
 	setActiveFile(path: string | null): void {
 		this._activeFile = path;
+		this._activeSelection = null;
 		this._post({ type: "active_file", path });
+	}
+
+	setSelection(selection: { text: string; startLine: number; endLine: number } | null): void {
+		this._activeSelection = selection;
+		this._post({ type: "active_selection", startLine: selection?.startLine ?? null, endLine: selection?.endLine ?? null });
 	}
 
 	private _buildActiveFileTag(): string {
 		if (!this._activeFile) return "";
 		try {
+			if (this._activeSelection?.text.trim()) {
+				const { text, startLine, endLine } = this._activeSelection;
+				return `<open_file path="${this._activeFile}" start_line="${startLine}" end_line="${endLine}">\n${text}\n</open_file>\n\n`;
+			}
 			const content = fs.readFileSync(this._activeFile, "utf-8");
 			return `<open_file path="${this._activeFile}">\n${content}\n</open_file>\n\n`;
 		} catch {

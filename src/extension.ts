@@ -159,6 +159,21 @@ export function activate(context: vscode.ExtensionContext) {
 			fuzzyPanel.setActiveFile(filePath);
 			for (const tab of fuzzyTabs) tab.setActiveFile(filePath);
 		}),
+
+		vscode.window.onDidChangeTextEditorSelection((event) => {
+			const editor = event.textEditor;
+			if (editor.document.uri.scheme !== "file") return;
+			const sel = editor.selection;
+			const selection = sel.isEmpty
+				? null
+				: {
+						text: editor.document.getText(sel),
+						startLine: sel.start.line + 1,
+						endLine: sel.end.line + 1,
+					};
+			fuzzyPanel.setSelection(selection);
+			for (const tab of fuzzyTabs) tab.setSelection(selection);
+		}),
 	);
 }
 
