@@ -578,7 +578,9 @@ function buildUI() {
 	elActiveFile.addEventListener("click", () => {
 		contextEnabled = !contextEnabled;
 		elActiveFile.classList.toggle("context-disabled", !contextEnabled);
-		elActiveFile.title = (contextEnabled ? "Click to exclude from context" : "Click to include in context") + (activeFilePath ? ` (${activeFilePath})` : "");
+		elActiveFile.title =
+			(contextEnabled ? "Click to exclude from context" : "Click to include in context") +
+			(activeFilePath ? ` (${activeFilePath})` : "");
 	});
 
 	inputFooter.append(hint, elSubmitBtn);
@@ -851,7 +853,9 @@ function handleMessage(event: MessageEvent) {
 			if (filePath) {
 				const name = filePath.replace(/.*[/\\]/, "");
 				elActiveFile.firstChild!.textContent = `📄 ${name}`;
-				elActiveFile.title = (contextEnabled ? "Click to exclude from context" : "Click to include in context") + (activeFilePath ? ` (${activeFilePath})` : "");
+				elActiveFile.title =
+					(contextEnabled ? "Click to exclude from context" : "Click to include in context") +
+					(activeFilePath ? ` (${activeFilePath})` : "");
 				elActiveFile.classList.add("visible");
 				elActiveFile.classList.toggle("context-disabled", !contextEnabled);
 				elActiveSelectionBadge.classList.remove("visible");

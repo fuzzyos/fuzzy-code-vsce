@@ -199,7 +199,11 @@ export class FuzzyPanel implements vscode.WebviewViewProvider {
 
 	setSelection(selection: { text: string; startLine: number; endLine: number } | null): void {
 		this._activeSelection = selection;
-		this._post({ type: "active_selection", startLine: selection?.startLine ?? null, endLine: selection?.endLine ?? null });
+		this._post({
+			type: "active_selection",
+			startLine: selection?.startLine ?? null,
+			endLine: selection?.endLine ?? null,
+		});
 	}
 
 	private _buildActiveFileTag(): string {
