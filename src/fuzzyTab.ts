@@ -3,6 +3,7 @@ import * as crypto from "crypto";
 import * as fs from "fs";
 import * as path from "path";
 import * as vscode from "vscode";
+import * as process from "process";
 
 export class FuzzyTab {
 	private static _count = 0;
