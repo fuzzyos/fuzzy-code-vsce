@@ -1,0 +1,19 @@
+dist/
+node_modules/
+resources/*
+!resources/images/
+*.vsix
+
+# OS files
+.DS_Store
+
+# Editor files
+.vscode/
+.zed/
+.idea/
+*.swp
+*.swo
+*~
+
+# Local folder
+/local/

@@ -1,0 +1,36 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "npm: build",
+			"command": "npm",
+			"args": ["run", "build"],
+			"options": {
+				"cwd": "${workspaceFolder}",
+				"env": {
+					"PATH": "${env:HOME}/.nvm/versions/node/v24.14.0/bin:${env:PATH}"
+				}
+			},
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": "$tsc"
+		},
+		{
+			"type": "shell",
+			"label": "npm: watch",
+			"command": "npm",
+			"args": ["run", "watch"],
+			"options": {
+				"cwd": "${workspaceFolder}",
+				"env": {
+					"PATH": "${env:HOME}/.nvm/versions/node/v24.14.0/bin:${env:PATH}"
+				}
+			},
+			"isBackground": true,
+			"problemMatcher": "$tsc-watch"
+		}
+	]
+}

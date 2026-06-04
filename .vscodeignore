@@ -1,0 +1,24 @@
+src/**
+scripts/**
+node_modules/**
+tsconfig.json
+.gitignore
+.vscode/**
+package-lock.json
+**/*.map
+# Exclude all files from parent/sibling directories (monorepo)
+../**
+../../**
+# Exclude sibling packages
+../fuzzy-ai/**
+../fuzzy-agent/**
+../fuzzy-tui/**
+../fuzzy-pods/**
+../fuzzy-web-ui/**
+../fuzzy-code/**
+../fuzzy-code-vsce/**
+# Exclude .git directories
+**/.git/**
+# Exclude macOS metadata
+**/.DS_Store
+../.DS_Store

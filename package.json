@@ -1,0 +1,125 @@
+{
+	"name": "fuzzy-code",
+	"displayName": "Fuzzy Code for VS Code",
+	"description": "Fuzzy Code for VS Code: Harness the power of Fuzzy Code without leaving your IDE",
+	"version": "0.4.0",
+	"private": true,
+	"publisher": "fuzzyos",
+	"icon": "icon.png",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/fuzzyos/fuzzy-code-vsce.git",
+		"directory": "packages/fuzzy-code-vsce"
+	},
+	"engines": {
+		"vscode": "^1.95.0"
+	},
+	"categories": [
+		"AI",
+		"Programming Languages",
+		"Other"
+	],
+	"keywords": [
+		"fuzzy",
+		"ai",
+		"fuzzy-code",
+		"llm"
+	],
+	"activationEvents": [],
+	"main": "./dist/extension.js",
+	"contributes": {
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "fuzzy-code-container",
+					"title": "Fuzzy Code",
+					"icon": "resources/images/sidebar_logo.svg"
+				}
+			]
+		},
+		"views": {
+			"fuzzy-code-container": [
+				{
+					"type": "webview",
+					"id": "fuzzy-code.sidebar",
+					"name": "Fuzzy Code"
+				}
+			]
+		},
+		"menus": {
+			"editor/title": [
+				{
+					"command": "fuzzy-code.openTab",
+					"group": "navigation"
+				},
+				{
+					"command": "fuzzy-code.openTuiTab",
+					"group": "navigation"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "fuzzy-code.openTab",
+				"title": "New Fuzzy Tab",
+				"category": "Fuzzy Code",
+				"icon": {
+					"light": "resources/images/icon_light.svg",
+					"dark": "resources/images/icon_dark.svg"
+				}
+			},
+			{
+				"command": "fuzzy-code.openTuiTab",
+				"title": "Open Fuzzy TUI as Tab",
+				"category": "Fuzzy Code"
+			},
+			{
+				"command": "fuzzy-code.focusSidebar",
+				"title": "Focus Sidebar",
+				"category": "Fuzzy Code"
+			},
+			{
+				"command": "fuzzy-code.openInTerminal",
+				"title": "Open Fuzzy in Terminal",
+				"category": "Fuzzy Code"
+			},
+			{
+				"command": "fuzzy-code.newSession",
+				"title": "New Session",
+				"category": "Fuzzy Code"
+			},
+			{
+				"command": "fuzzy-code.resumeSession",
+				"title": "Resume Session",
+				"category": "Fuzzy Code"
+			}
+		],
+		"configuration": {
+			"title": "Fuzzy Code",
+			"properties": {
+				"fuzzy-code.executablePath": {
+					"type": "string",
+					"default": "",
+					"description": "Path to the fuzzy CLI executable. Leave empty to use the bundled CLI."
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run build",
+		"build": "node scripts/copyCli.js && esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --sourcemap && esbuild src/webview.ts --bundle --outfile=dist/webview.js --format=iife --platform=browser --sourcemap",
+		"watch": "node scripts/copyCli.js && esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --sourcemap --watch & esbuild src/webview.ts --bundle --outfile=dist/webview.js --format=iife --platform=browser --sourcemap --watch",
+		"clean": "shx rm -rf dist resources/fuzzy-code",
+		"lint": "biome check --error-on-warnings .",
+		"check": "tsc --noEmit && biome check --error-on-warnings ."
+	},
+	"devDependencies": {
+		"@fuzzyos/fuzzy-code": "0.4.0",
+		"@types/node": "^25.6.0",
+		"@types/vscode": "^1.95.0",
+		"esbuild": "^0.25.0",
+		"shx": "^0.4.0",
+		"typescript": "^5.7.3"
+	}
+}
