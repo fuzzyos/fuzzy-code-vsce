@@ -115,7 +115,7 @@
 		"check": "tsc --noEmit && biome check --error-on-warnings ."
 	},
 	"devDependencies": {
-		"@fuzzyos/fuzzy-code": "0.4.1",
+		"@fuzzyos/fuzzy-code": "0.4.2",
 		"@types/node": "^25.6.0",
 		"@types/vscode": "^1.95.0",
 		"esbuild": "^0.25.0",
